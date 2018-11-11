@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, Redirect } from "react-router-dom";
+import * as actionCreators from "../store/actions/index";
+import { connect } from "react-redux";
+let logtype;
 class RegistationForm extends Component {
   constructor(props) {
     super(props);
@@ -19,11 +21,20 @@ class RegistationForm extends Component {
 
   submitHandler(e) {
     e.preventDefault();
-    alert("I don't work yet");
+    if (logtype === "login") {
+      this.props.login(this.state, this.props.history);
+    } else {
+      this.props.signup(this.state, this.props.history);
+    }
   }
-
   render() {
+    if (this.props.user) {
+      return <Redirect to="/" />;
+    }
     const type = this.props.match.url.substring(1);
+    if (type === "login") {
+      logtype = "login";
+    }
     return (
       <div className="card col-6 mx-auto p-0 mt-5">
         <div className="card-body">
@@ -81,4 +92,17 @@ class RegistationForm extends Component {
   }
 }
 
-export default RegistationForm;
+const mapStateToProps = state => ({
+  user: state.rootAuth.user
+});
+const mapDispatchToProps = dispatch => ({
+  login: (userData, history) =>
+    dispatch(actionCreators.login(userData, history)),
+  signup: (userData, history) =>
+    dispatch(actionCreators.signup(userData, history))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegistationForm);
