@@ -40,7 +40,7 @@ class SideNav extends React.Component {
               </h2>
             )}
           </li>
-          {this.props.user ? { channelLinks } : null}
+          {this.props.user && <div>{channelLinks}</div>}
         </ul>
 
         <ul className="navbar-nav sidenav-toggler">
@@ -66,6 +66,7 @@ class SideNav extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.rootAuth.user,
   channels: state.rootChan.channels
 });
 const mapDispatchToProps = dispatch => ({

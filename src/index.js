@@ -12,10 +12,12 @@ import App from "./App";
 // Reducers
 import authReducer from "./store/reducers/authentication";
 import chanReducer from "./store/reducers/channels";
+import errorReducer from "./store/reducers/errors";
 
 const rootReducer = combineReducers({
   rootAuth: authReducer,
-  rootChan: chanReducer
+  rootChan: chanReducer,
+  rootError: errorReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

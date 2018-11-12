@@ -18,7 +18,13 @@ class RegistationForm extends Component {
   changeHandler(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
+  componentWillUnmount() {
+    this.props.resetForm();
+  }
+  handleReset() {
+    this.props.resetForm();
+    this.setState({ username: "", password: "" });
+  }
   submitHandler(e) {
     e.preventDefault();
     if (logtype === "login") {
@@ -43,12 +49,13 @@ class RegistationForm extends Component {
               ? "Login to send messages"
               : "Register an account"}
           </h5>
-          <form onSubmit={this.submitHandler} noValidate>
-            {/* {authStore.errors.length > 0 && (
-            <div className="alert alert-danger" role="alert">
-              {authStore.errors}
-            </div>
-          )} */}
+          <form onSubmit={this.submitHandler}>
+            {this.props.errors.non_field_errors && (
+              <div className="alert alert-danger" role="alert">
+                {this.props.errors.non_field_errors}
+              </div>
+            )}
+
             <div className="form-group">
               <input
                 className="form-control"
@@ -56,6 +63,7 @@ class RegistationForm extends Component {
                 placeholder="Username"
                 name="username"
                 required
+                value={this.state.username}
                 onChange={this.changeHandler}
               />
             </div>
@@ -66,6 +74,7 @@ class RegistationForm extends Component {
                 placeholder="Password"
                 name="password"
                 required
+                value={this.state.password}
                 onChange={this.changeHandler}
               />
             </div>
@@ -80,7 +89,7 @@ class RegistationForm extends Component {
           <Link
             to={type === "login" ? "/signup" : "/login"}
             className="btn btn-small btn-link"
-            // onClick={() => (authStore.errors = [])}
+            onClick={() => this.handleReset()}
           >
             {type === "login"
               ? "register an account"
@@ -93,13 +102,15 @@ class RegistationForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.rootAuth.user
+  user: state.rootAuth.user,
+  errors: state.rootError
 });
 const mapDispatchToProps = dispatch => ({
   login: (userData, history) =>
     dispatch(actionCreators.login(userData, history)),
   signup: (userData, history) =>
-    dispatch(actionCreators.signup(userData, history))
+    dispatch(actionCreators.signup(userData, history)),
+  resetForm: () => dispatch(actionCreators.setErrors({}))
 });
 
 export default connect(

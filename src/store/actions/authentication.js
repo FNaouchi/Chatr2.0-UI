@@ -5,10 +5,6 @@ import * as actionTypes from "./actionTypes";
 
 import { setErrors } from "./errors";
 
-const instance = axios.create({
-  baseURL: "https://api-chatr.herokuapp.com/"
-});
-
 const setAuthToken = token => {
   if (token) {
     localStorage.setItem("token", token);
@@ -53,10 +49,11 @@ export const login = (userData, history) => {
         dispatch(setCurrentUser(decodedUser));
         history.push("/");
       })
-      .catch(err => console.error(err.response));
+      .catch(err => {
+        dispatch(setErrors(err.response.data));
+      });
   };
 };
-
 export const signup = (userData, history) => {
   return dispatch => {
     axios
@@ -68,7 +65,7 @@ export const signup = (userData, history) => {
         dispatch(setCurrentUser(decodedUser));
         history.push("/");
       })
-      .catch(err => console.error(err.response));
+      .catch(err => dispatch(setErrors(err.response.data)));
   };
 };
 
