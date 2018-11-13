@@ -7,6 +7,8 @@ import NavBar from "./components/Navigation/NavBar";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import Welcome from "./components/Welcome";
+import ChannelForm from "./components/ChannelForm";
+import ChannelChat from "./components/ChannelChat";
 import RegistrationForm from "./components/RegistrationForm";
 import SuperSecretPage from "./components/SuperSecretPage";
 
@@ -19,6 +21,8 @@ class App extends Component {
       <div className="content-wrapper">
         <NavBar />
         <Switch>
+          <Route path="/channels/:channelId" component={ChannelChat} />
+          <Route path="/createChannel" component={ChannelForm} />
           <Route path="/welcome" component={Welcome} />
           <Route path="/(login|signup)" component={RegistrationForm} />
           <PrivateRoute path="/private" component={SuperSecretPage} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import * as actionCreators from "../../store/actions/index";
 import { connect } from "react-redux";
 // Fontawesome
@@ -27,7 +27,11 @@ class SideNav extends React.Component {
     ));
     return (
       <div>
-        <ul className="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <ul
+          className="navbar-nav navbar-sidenav"
+          style={{ overflowY: "scroll" }}
+          id="exampleAccordion"
+        >
           <li className="nav-item" data-toggle="tooltip" data-placement="right">
             {this.props.user ? (
               <Link className="nav-link heading" to="/createChannel">
@@ -73,7 +77,9 @@ const mapDispatchToProps = dispatch => ({
   fetchChannels: () => dispatch(actionCreators.fetchChannels())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SideNav);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SideNav)
+);
