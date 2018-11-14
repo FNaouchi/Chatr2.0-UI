@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as actionCreators from "../store/actions/index";
 import { connect } from "react-redux";
 
@@ -19,12 +19,13 @@ class ChannelForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleReset() {
-    this.setState({ name: "", image_url: "" });
-  }
   submitHandler(e) {
     e.preventDefault();
     this.props.postChannel(this.state);
+    this.setState({ name: "", image_url: "" });
+  }
+  componentWillUnmount() {
+    this.setState({ name: "", image_url: "" });
   }
   render() {
     if (!this.props.user) {
@@ -57,7 +58,11 @@ class ChannelForm extends Component {
                 onChange={this.changeHandler}
               />
             </div>
-            <input className="btn" type="submit" value="Create Channel" />
+            <input
+              className="btn btn-light"
+              type="submit"
+              value="Create Channel"
+            />
           </form>
         </div>
       </div>

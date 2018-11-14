@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actionCreators from "../store/actions/index";
 class ChannelChat extends Component {
@@ -18,6 +18,7 @@ class ChannelChat extends Component {
   onSubmit(event) {
     event.preventDefault();
     this.props.postMessage(this.props.match.params.channelId, this.state);
+    this.setState({ message: "" });
   }
   componentDidUpdate(prevprops) {
     if (this.props.match.params !== prevprops.match.params) {
@@ -52,7 +53,7 @@ class ChannelChat extends Component {
           <div className=" container mx-5 jumbotron">{channelChats}</div>
           <div className="overlay z-0" />
         </header>
-        <form className="container" onSubmit={this.onSubmit}>
+        <form className="container mb-5" onSubmit={this.onSubmit}>
           <input
             style={{ width: 400 }}
             type="text"
@@ -62,7 +63,11 @@ class ChannelChat extends Component {
             onChange={this.onTextChange}
           />
 
-          <input className="btn" type="submit" value="Add Message" />
+          <input
+            className="btn btn-outline-secondary"
+            type="submit"
+            value="Add Message"
+          />
         </form>
       </div>
     );
